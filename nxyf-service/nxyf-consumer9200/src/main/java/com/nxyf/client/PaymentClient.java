@@ -14,6 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 @FeignClient(value = "nxyf-provider")
 public interface PaymentClient {
 
-    @GetMapping("/payment/info")
+    @GetMapping("/nxyf-provider/payment/info")
     public R queryInfo();
 }

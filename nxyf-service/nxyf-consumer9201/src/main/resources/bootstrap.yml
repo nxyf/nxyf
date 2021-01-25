@@ -1,5 +1,7 @@
 server:
   port: 9201
+  servlet:
+    context-path: /nxyf-consumer
 spring:
   application:
     name: nxyf-consumer
