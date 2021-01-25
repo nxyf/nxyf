@@ -1,0 +1,34 @@
+spring:
+  profiles:
+    active: dev
+  zipkin:
+    base-url: http://localhost:9411
+  sleuth:
+    sampler:
+      probability: 1
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true   #开启从注册中心动态创建路由的，根据服务名进行路由
+      routes:
+        - id: gateway     #通过nginx代理时，路径/gateway/api/payment/,先到gateway断言，移除gateway，再次访问gateway，根据断言路由
+          uri: lb://gateway
+          predicates:
+            - Path=/gateway/**
+          filters:
+            - StripPrefix=1
+        - id: nxyf-provider #路由的ID，没有固定规则但要求唯一，建议配合服务名
+          uri: lb://nxyf-provider  #匹配后提供服务的路由地址
+          predicates:
+            - Path=/api/nxyf-provider/**   #断言,路径相匹配的进行路由
+          filters:
+            - StripPrefix=1   #移除的路径需在-path后面写
+        - id: nxyf-consumer
+          uri: lb://nxyf-consumer
+          predicates:
+            - Path=/api/nxyf-consumer/**
+          filters:
+            - StripPrefix=1
+      default-filters:  #默认过滤器
+        - AddResponseHeader=X-Response-Default-Red, Default-Blue

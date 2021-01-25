@@ -1,5 +1,7 @@
 server:
   port: 9100
+  servlet:
+    context-path: /nxyf-provider   #项目名
 spring:
   application:
     name: nxyf-provider

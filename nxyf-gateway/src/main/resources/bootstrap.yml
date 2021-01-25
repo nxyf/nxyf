@@ -1,10 +1,8 @@
 server:
-  port: 9101
-  servlet:
-    context-path: /nxyf-provider   #项目名
+  port: 9300
 spring:
   application:
-    name: nxyf-provider
+    name: gateway
   cloud:
     nacos:
       discovery:
