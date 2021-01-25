@@ -1,0 +1,14 @@
+server:
+  port: 9200
+spring:
+  application:
+    name: nxyf-consumer
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+      config:
+        server-addr: localhost:8848
+        file-extension: yaml
+        group: DEV_GROUP
+        namespace: 1ddd5371-d687-4263-b9df-c9acbf09f052

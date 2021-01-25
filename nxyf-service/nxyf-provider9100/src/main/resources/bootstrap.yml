@@ -1,0 +1,14 @@
+server:
+  port: 9100
+spring:
+  application:
+    name: nxyf-provider
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848   #注册中心地址
+      config:
+        server-addr: localhost:8848   #配置中心地址
+        file-extension: yaml          #配置文件格式
+        group: DEV_GROUP
+        namespace: 1ddd5371-d687-4263-b9df-c9acbf09f052   #指定命名空间
