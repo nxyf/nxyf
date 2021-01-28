@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 public class PaymentClientImpl implements PaymentClient{
     @Override
     public R queryInfo() {
-        return null;
+
+        return R.error("调用方--服务降级处理");
     }
 }

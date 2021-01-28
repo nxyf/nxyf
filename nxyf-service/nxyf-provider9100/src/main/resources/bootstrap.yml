@@ -14,3 +14,9 @@ spring:
         file-extension: yaml          #配置文件格式
         group: DEV_GROUP
         namespace: 1ddd5371-d687-4263-b9df-c9acbf09f052   #指定命名空间
+    sentinel:
+      transport:
+        dashboard: localhost:8080
+        port: 8719
+  main:
+    allow-bean-definition-overriding: true    #遇到同名时是否允许覆盖

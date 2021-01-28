@@ -40,7 +40,7 @@ public class NxyfExceptionHandler {
         return R.error("没有权限，请联系管理员授权");
     }*/
 
-    @ExceptionHandler(Exception.class)
+//    @ExceptionHandler(Exception.class)
     public R handleException(Exception e) {
         logger.error(e.getMessage(), e);
         return R.error();
