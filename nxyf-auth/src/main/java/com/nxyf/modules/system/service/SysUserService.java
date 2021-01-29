@@ -1,6 +1,7 @@
 
 package com.nxyf.modules.system.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.nxyf.modules.system.entity.SysUserEntity;
 import com.nxyf.utils.PageUtils;
@@ -38,4 +39,6 @@ public interface SysUserService extends IService<SysUserEntity> {
 	 * @param newPassword  新密码
 	 */
 	boolean updatePassword(Long userId, String password, String newPassword);
+
+    IPage queryList(SysUserEntity userEntity);
 }

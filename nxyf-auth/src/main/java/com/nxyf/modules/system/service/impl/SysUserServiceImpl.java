@@ -3,6 +3,7 @@ package com.nxyf.modules.system.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.nxyf.common.utils.Constant;
 import com.nxyf.common.utils.Query;
@@ -95,5 +96,14 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
         return this.update(userEntity,
         	new QueryWrapper<SysUserEntity>().eq("user_id", userId).eq("password", password));
     }
+
+	@Override
+	public IPage queryList(SysUserEntity userEntity) {
+		QueryWrapper<SysUserEntity> queryWrapper = new QueryWrapper<>();
+		queryWrapper.like("username", userEntity.getUsername()).eq("email",userEntity.getEmail())
+				.eq("mobile",userEntity.getMobile());
+		IPage<SysUserEntity> page = baseMapper.selectPage(new Page<>(userEntity.getCurrentPage(), userEntity.getPageSize()), queryWrapper);
+		return page;
+	}
 
 }

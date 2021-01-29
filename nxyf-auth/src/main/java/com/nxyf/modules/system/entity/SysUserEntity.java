@@ -5,8 +5,11 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.nxyf.utils.PageDomain;
 import com.nxyf.validator.group.AddGroup;
 import com.nxyf.validator.group.UpdateGroup;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
@@ -21,19 +24,22 @@ import java.util.List;
  */
 @Data
 @TableName("sys_user")
-public class SysUserEntity implements Serializable {
+@ApiModel(description = "系统用户实体")
+public class SysUserEntity extends PageDomain implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	/**
 	 * 用户ID
 	 */
 	@TableId
+	@ApiModelProperty(value = "ID",name = "userId")
 	private Long userId;
 
 	/**
 	 * 用户名
 	 */
 	@NotBlank(message="用户名不能为空", groups = {AddGroup.class, UpdateGroup.class})
+	@ApiModelProperty(value = "用户名",name = "username")
 	private String username;
 
 	/**

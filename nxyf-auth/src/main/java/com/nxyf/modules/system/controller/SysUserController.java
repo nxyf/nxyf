@@ -2,132 +2,39 @@
 package com.nxyf.modules.system.controller;
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.nxyf.modules.system.entity.SysUserEntity;
-import com.nxyf.modules.system.service.SysUserRoleService;
 import com.nxyf.modules.system.service.SysUserService;
-import com.nxyf.utils.PageUtils;
 import com.nxyf.utils.R;
-import org.apache.commons.lang.ArrayUtils;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 系统用户
  */
 @RestController
 @RequestMapping("/sys/user")
+@Api(tags = {"用户管理模块"})//可以配置多个
 public class SysUserController {
-	@Autowired
-	private SysUserService sysUserService;
-	@Autowired
-	private SysUserRoleService sysUserRoleService;
-	
-	/**
-	 * 所有用户列表
-	 */
-	@RequestMapping("/list")
-//	@RequiresPermissions("sys:user:list")
-	public R list(@RequestParam Map<String, Object> params){
-		PageUtils page = sysUserService.queryPage(params);
 
-		return R.ok().put("page", page);
-	}
-	
-	/**
-	 * 获取登录的用户信息
-	 */
-	@RequestMapping("/info")
-	public R info(){
-//		return R.ok().put("user", getUser());
-		return R.ok();
-	}
-	
-	/**
-	 * 修改登录用户密码
-	 */
-//	@SysLog("修改密码")
-	@RequestMapping("/password")
-	public R password(String password, String newPassword){
-//		Assert.isBlank(newPassword, "新密码不为能空");
 
-		//原密码
-//		password = ShiroUtils.sha256(password, getUser().getSalt());
-		//新密码
-//		newPassword = ShiroUtils.sha256(newPassword, getUser().getSalt());
-				
-		//更新密码
-		/*boolean flag = sysUserService.updatePassword(getUserId(), password, newPassword);
-		if(!flag){
-			return R.error("原密码不正确");
-		}*/
-		
-		return R.ok();
-	}
-	
-	/**
-	 * 用户信息
-	 */
-	@RequestMapping("/info/{userId}")
-//	@RequiresPermissions("sys:user:info")
-	public R info(@PathVariable("userId") Long userId){
-		SysUserEntity user = sysUserService.getById(userId);
-		
-		//获取用户所属的角色列表
-		List<Long> roleIdList = sysUserRoleService.queryRoleIdList(userId);
-		user.setRoleIdList(roleIdList);
-		
-		return R.ok().put("user", user);
-	}
-	
-	/**
-	 * 保存用户
-	 */
-//	@SysLog("保存用户")
-	@RequestMapping("/save")
-//	@RequiresPermissions("sys:user:save")
-	public R save(@RequestBody SysUserEntity user){
-//		ValidatorUtils.validateEntity(user, AddGroup.class);
-		
-		sysUserService.saveUser(user);
-		
-		return R.ok();
-	}
-	
-	/**
-	 * 修改用户
-	 */
-//	@SysLog("修改用户")
-	@RequestMapping("/update")
-//	@RequiresPermissions("sys:user:update")
-	public R update(@RequestBody SysUserEntity user){
-//		ValidatorUtils.validateEntity(user, UpdateGroup.class);
+    @Autowired
+    private SysUserService userService;
 
-		sysUserService.update(user);
-		
-		return R.ok();
-	}
-	
-	/**
-	 * 删除用户
-	 */
-//	@SysLog("删除用户")
-	@RequestMapping("/delete")
-//	@RequiresPermissions("sys:user:delete")
-	public R delete(@RequestBody Long[] userIds){
-		if(ArrayUtils.contains(userIds, 1L)){
-			return R.error("系统管理员不能删除");
-		}
-		
-		/*if(ArrayUtils.contains(userIds, getUserId())){
-			return R.error("当前用户不能删除");
-		}*/
+    @ApiOperation(value = "查询用户信息",tags = "用户详细信息")
+    @ApiResponses({ @ApiResponse(code = 200, message = "OK", response = R.class) })
+    @GetMapping("/info/{id}")
+    public R queryInfo(@ApiParam(value = "用户ID",required = true) @PathVariable("id") Long id) {
+        SysUserEntity userEntity = userService.getById(id);
+        return R.ok().put("data",userEntity);
+    }
 
-		sysUserService.removeByIds(Arrays.asList(userIds));
-		
-		return R.ok();
-	}
+    @ApiOperation(value = "分页查询用户",notes = "用户列表")
+    @PostMapping("/list")
+    public R queryList(@ApiParam(value = "用户查询条件") @RequestBody @Validated SysUserEntity userEntity){
+        IPage page =userService.queryList(userEntity);
+        return R.ok().put("data",page);
+    }
 }
