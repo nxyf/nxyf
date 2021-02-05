@@ -6,8 +6,10 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.nxyf.modules.system.entity.SysUserEntity;
 import com.nxyf.modules.system.service.SysUserService;
 import com.nxyf.utils.R;
+import com.nxyf.validator.group.AddGroup;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/sys/user")
 @Api(tags = {"用户管理模块"})//可以配置多个
+@RefreshScope
 public class SysUserController {
 
 
@@ -36,5 +39,15 @@ public class SysUserController {
     public R queryList(@ApiParam(value = "用户查询条件") @RequestBody @Validated SysUserEntity userEntity){
         IPage page =userService.queryList(userEntity);
         return R.ok().put("data",page);
+    }
+
+    @ApiOperation(value = "保存用户")
+    @PostMapping("/save")
+    public R saveUser(@ApiParam(value = "保存用户") @RequestBody @Validated(value = {AddGroup.class}) SysUserEntity userEntity) {
+        boolean flag = userService.save(userEntity);
+        if (!flag) {
+            return R.error();
+        }
+        return R.ok();
     }
 }

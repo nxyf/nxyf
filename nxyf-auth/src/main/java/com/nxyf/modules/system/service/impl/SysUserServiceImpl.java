@@ -100,9 +100,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 	@Override
 	public IPage queryList(SysUserEntity userEntity) {
 		QueryWrapper<SysUserEntity> queryWrapper = new QueryWrapper<>();
-		queryWrapper.like("username", userEntity.getUsername()).eq("email",userEntity.getEmail())
+		queryWrapper
+				.like("username", userEntity.getUsername())
+				.eq("email",userEntity.getEmail())
 				.eq("mobile",userEntity.getMobile());
-		IPage<SysUserEntity> page = baseMapper.selectPage(new Page<>(userEntity.getCurrentPage(), userEntity.getPageSize()), queryWrapper);
+		IPage<SysUserEntity> page = baseMapper.selectPage(new Page<>(userEntity.getCurrentPage(),
+				userEntity.getPageSize()), queryWrapper);
 		return page;
 	}
 
